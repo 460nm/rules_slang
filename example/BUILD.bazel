@@ -1,0 +1,8 @@
+load("@rules_slang//slang:defs.bzl", "slang_shader")
+
+slang_shader(
+    name = "my_shader",
+    srcs = [
+        "triangle.vert.slang",
+    ],
+)
