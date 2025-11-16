@@ -1,10 +1,22 @@
-module(name = "slang_example", version = "0.1.0")
+module(
+    name = "slang_example",
+    version = "0.1.0",
+)
 
 bazel_dep(name = "slang_toolchain")
-local_path_override(module_name = "slang_toolchain", path = "../../toolchain/")
+local_path_override(
+    module_name = "slang_toolchain",
+    path = "../../toolchain/",
+)
 
 bazel_dep(name = "rules_slang", version = "0.1.0")
-local_path_override(module_name = "rules_slang", path = "../")
+local_path_override(
+    module_name = "rules_slang",
+    path = "../",
+)
 
 bazel_dep(name = "slang_example_othermod", version = "0.1.0")
-local_path_override(module_name = "slang_example_othermod", path = "b/")
+local_path_override(
+    module_name = "slang_example_othermod",
+    path = "b/",
+)

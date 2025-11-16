@@ -5,8 +5,8 @@ slang_module(
     srcs = [
         "mymod.slang",
     ],
+    visibility = ["//:__subpackages__"],
     deps = [
         "@slang_example_othermod//:othermod",
     ],
-    visibility = ["//:__subpackages__"],
 )
