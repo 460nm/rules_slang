@@ -1,8 +1,18 @@
-load("@rules_slang//slang:defs.bzl", "slang_shader")
+load("@rules_slang//slang:defs.bzl", "slang_shader", "slang_module")
+
+slang_module(
+    name = "mymod",
+    srcs = [
+        "mymod.slang",
+    ],
+)
 
 slang_shader(
-    name = "my_shader",
+    name = "triangle",
     srcs = [
-        "triangle.vert.slang",
+        "triangle.slang",
+    ],
+    deps = [
+        ":mymod",
     ],
 )

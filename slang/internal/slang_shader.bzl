@@ -1,24 +1,26 @@
+load(":actions.bzl", "compile_module", "link_shader")
+load(":providers.bzl", "SlangModuleProvider")
+
 def _slang_shader_impl(ctx):
-    output_spv_file = ctx.actions.declare_file("{name}.spv".format(name = ctx.label.name))
+    output_module_file_name = "{name}.slang-module".format(name = ctx.label.name)
+    output_module_file = ctx.actions.declare_file(output_module_file_name)
+    compile_module(ctx, ctx.files.srcs, output_module_file, ctx.executable._slangc)
 
-    args = ctx.actions.args()
-    args.add_all(["-target", "spirv"])
-    args.add_all(["-profile", "spirv_1_6"])
-    args.add_all(["-o", output_spv_file.path])
-    args.add("--")
-    args.add_all(ctx.files.srcs)
+    output_shader_file_name = "{name}.spv".format(name = ctx.label.name)
+    output_shader_file = ctx.actions.declare_file(output_shader_file_name)
 
-    ctx.actions.run(
-        outputs = [output_spv_file],
-        inputs = ctx.files.srcs,
-        executable = ctx.executable._slangc,
-        arguments = [args],
-        mnemonic = "SlangCompile",
-        progress_message = "Compiling shader %{output}",
-    )
+    deps_modules = depset(direct = [
+        dep[SlangModuleProvider].module_file for dep in ctx.attr.deps
+    ], transitive = [
+        dep[SlangModuleProvider].deps for dep in ctx.attr.deps
+    ])
+    modules = depset(direct = [output_module_file], transitive = [deps_modules])
+    modules_list = modules.to_list()
+
+    link_shader(ctx, modules_list, output_shader_file, ctx.executable._slangc)
 
     return [DefaultInfo(
-        files = depset([output_spv_file]),
+        files = depset([output_shader_file]),
     )]
 
 slang_shader = rule(
@@ -27,6 +29,9 @@ slang_shader = rule(
         "srcs": attr.label_list(
             allow_files = True,
         ),
+        "deps": attr.label_list(
+            providers = [SlangModuleProvider],
+        ),
         "_slangc": attr.label(
             executable = True,
             cfg = "exec",
@@ -34,4 +39,3 @@ slang_shader = rule(
         ),
     },
 )
-    
