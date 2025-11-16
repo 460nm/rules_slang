@@ -1,4 +1,4 @@
-import mymod;
+import a.mymod;
 
 [shader("vertex")]
 float4 main(uint vertexID: SV_VertexID) : SV_Position {

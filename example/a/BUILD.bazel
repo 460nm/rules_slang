@@ -1,0 +1,12 @@
+load("@rules_slang//slang:defs.bzl", "slang_module")
+
+slang_module(
+    name = "mymod",
+    srcs = [
+        "mymod.slang",
+    ],
+    deps = [
+        "//b:othermod",
+    ],
+    visibility = ["//:__subpackages__"],
+)
