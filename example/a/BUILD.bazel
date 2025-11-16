@@ -6,7 +6,7 @@ slang_module(
         "mymod.slang",
     ],
     deps = [
-        "//b:othermod",
+        "@slang_example_othermod//:othermod",
     ],
     visibility = ["//:__subpackages__"],
 )

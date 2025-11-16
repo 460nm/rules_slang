@@ -1,7 +1,7 @@
-def compile_module(ctx, srcs, deps_module_files_depset, output_module_file, slangc, other_modules = []):
+def compile_module(ctx, srcs, deps_module_files_depset, deps_root_paths_depset, output_module_file, slangc):
     args = ctx.actions.args()
+    args.add_all(deps_root_paths_depset.to_list(), before_each = "-I")
     args.add_all([
-        "-I", ctx.bin_dir.path,
         "-o", output_module_file.path,
     ])
     args.add("--")
@@ -20,13 +20,12 @@ def compile_module(ctx, srcs, deps_module_files_depset, output_module_file, slan
 
 def link_shader(ctx, module_files, output_shader_file, slangc):
     args = ctx.actions.args()
+    args.add_all(module_files)
     args.add_all([
         "-target", "spirv",
         "-profile", "spirv_1_6",
-        "-I", ctx.bin_dir.path,
         "-o", output_shader_file.path,
-        "--",
-    ] + module_files)
+    ])
 
     ctx.actions.run(
         outputs = [output_shader_file],

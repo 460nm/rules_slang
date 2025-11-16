@@ -5,5 +5,5 @@ slang_module(
     srcs = [
         "othermod.slang",
     ],
-    visibility = ["//:__subpackages__"],
+    visibility = ["//visibility:public"],
 )

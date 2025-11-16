@@ -1,17 +1,14 @@
 load(":actions.bzl", "compile_module", "link_shader")
 load(":providers.bzl", "SlangModuleProvider")
-load(":utils.bzl", "gather_deps_module_files")
+load(":utils.bzl", "gather_deps_module_files", "gather_deps_root_paths")
 
 def _slang_shader_impl(ctx):
-    deps_modules = depset(direct = [
-        dep[SlangModuleProvider].module_file for dep in ctx.attr.deps
-    ], transitive = [
-        dep[SlangModuleProvider].deps for dep in ctx.attr.deps
-    ])
+    deps_modules = gather_deps_module_files(ctx.attr.deps)
+    deps_root_paths = gather_deps_root_paths(ctx.attr.deps)
 
     output_module_file_name = "{name}.slang-module".format(name = ctx.label.name)
     output_module_file = ctx.actions.declare_file(output_module_file_name)
-    compile_module(ctx, ctx.files.srcs, deps_modules, output_module_file, ctx.executable._slangc)
+    compile_module(ctx, ctx.files.srcs, deps_modules, deps_root_paths, output_module_file, ctx.executable._slangc)
 
     output_shader_file_name = "{name}.spv".format(name = ctx.label.name)
     output_shader_file = ctx.actions.declare_file(output_shader_file_name)

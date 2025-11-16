@@ -1,6 +1,6 @@
 module mymod;
 
-import b.othermod;
+import othermod;
 
 public float2 make_triangle(uint vertexId) {
   float half = get_half();
