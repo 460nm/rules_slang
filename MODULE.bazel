@@ -3,8 +3,7 @@ module(
     version = "0.1.0",
 )
 
-bazel_dep(name = "slang_toolchain")
-local_path_override(
-    module_name = "slang_toolchain",
-    path = "../toolchain/",
-)
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
+
+slang = use_extension("//slang:extensions.bzl", "slang")
+use_repo(slang, "slang_toolchain")
