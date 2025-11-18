@@ -1,26 +1,19 @@
 _BUILD_FILE_CONTENT = """
-load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
-load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+load("@rules_slang//slang/internal:toolchain.bzl", "slang_toolchain")
 
-copy_file(
-    name = "slang_compiler_dll",
-    src = "bin/slang-compiler.dll",
-    out = "slang-compiler.dll",
+slang_toolchain(
+    name = "slang_toolchain",
+    slangc = "bin/slangc%{exe}",
 )
 
-copy_file(
-    name = "slang_glslang_dll",
-    src = "bin/slang-glslang.dll",
-    out = "slang-glslang.dll",
-)
-
-native_binary(
-    name = "slangc",
-    src = "bin/slangc.exe",
-    data = [
-        ":slang_compiler_dll",
-        ":slang_glslang_dll",
+toolchain(
+    name = "toolchain",
+    exec_compatible_with = [
+        "@platforms//os:%{os}",
+        "@platforms//cpu:%{arch}",
     ],
+    toolchain_type = "@rules_slang//slang:toolchain_type",
+    toolchain = ":slang_toolchain",
     visibility = ["//visibility:public"],
 )
 """
@@ -42,12 +35,25 @@ def slang_download_impl(ctx):
     if not download_success:
         fail("failed to download and extract Slang from provided URLs")
 
-    ctx.file("BUILD.bazel", _BUILD_FILE_CONTENT)
+    build_file_content = _BUILD_FILE_CONTENT \
+        .replace("%{os}", ctx.attr.os) \
+        .replace("%{arch}", ctx.attr.arch) \
+        .replace("%{exe}", ".exe" if ctx.attr.os == "windows" else "")
+
+    ctx.file("BUILD.bazel", build_file_content)
 
 slang_download = repository_rule(
     implementation = slang_download_impl,
     attrs = {
         "urls": attr.string_list(mandatory = True),
         "sha256": attr.string(mandatory = True),
+        "os": attr.string(
+            mandatory = True,
+            values = ["windows"],
+        ),
+        "arch": attr.string(
+            mandatory = True,
+            values = ["x86_64"],
+        ),
     },
 )

@@ -9,7 +9,7 @@ def _slang_module_impl(ctx):
     deps_module_files = gather_deps_module_files(ctx.attr.deps)
     deps_root_paths = gather_deps_root_paths(ctx.attr.deps)
 
-    compile_module(ctx, ctx.files.srcs, deps_module_files, deps_root_paths, output_module_file, ctx.executable._slangc)
+    compile_module(ctx, ctx.files.srcs, deps_module_files, deps_root_paths, output_module_file)
 
     root_path = output_module_file.root.path
     if ctx.label.workspace_root:
@@ -33,10 +33,6 @@ slang_module = rule(
         "deps": attr.label_list(
             providers = [SlangModuleProvider],
         ),
-        "_slangc": attr.label(
-            executable = True,
-            cfg = "exec",
-            default = "@slang_toolchain//:slangc",
-        ),
     },
+    toolchains = ["//slang:toolchain_type"],
 )

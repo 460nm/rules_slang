@@ -3,7 +3,9 @@ module(
     version = "0.1.0",
 )
 
-bazel_dep(name = "bazel_skylib", version = "1.8.2")
+bazel_dep(name = "platforms", version = "1.0.0")
 
 slang = use_extension("//slang:extensions.bzl", "slang")
 use_repo(slang, "slang_toolchain")
+
+register_toolchains("@slang_toolchain//:all")

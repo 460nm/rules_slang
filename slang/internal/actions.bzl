@@ -1,4 +1,6 @@
-def compile_module(ctx, srcs, deps_module_files_depset, deps_root_paths_depset, output_module_file, slangc):
+def compile_module(ctx, srcs, deps_module_files_depset, deps_root_paths_depset, output_module_file):
+    slangc = ctx.toolchains["//slang:toolchain_type"].slangc
+
     args = ctx.actions.args()
     args.add_all(deps_root_paths_depset.to_list(), before_each = "-I")
     args.add_all([
@@ -13,13 +15,15 @@ def compile_module(ctx, srcs, deps_module_files_depset, deps_root_paths_depset, 
     ctx.actions.run(
         outputs = [output_module_file],
         inputs = inputs,
-        executable = ctx.executable._slangc,
+        executable = slangc,
         arguments = [args],
         mnemonic = "SlangCompile",
         progress_message = "Compiling shader module %{output}",
     )
 
-def link_shader(ctx, module_files, output_shader_file, slangc):
+def link_shader(ctx, module_files, output_shader_file):
+    slangc = ctx.toolchains["//slang:toolchain_type"].slangc
+
     args = ctx.actions.args()
     args.add_all(module_files)
     args.add_all([
@@ -34,7 +38,7 @@ def link_shader(ctx, module_files, output_shader_file, slangc):
     ctx.actions.run(
         outputs = [output_shader_file],
         inputs = module_files,
-        executable = ctx.executable._slangc,
+        executable = slangc,
         arguments = [args],
         mnemonic = "SlangLink",
         progress_message = "Linking shader %{output}",

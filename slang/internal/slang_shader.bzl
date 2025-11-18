@@ -8,7 +8,7 @@ def _slang_shader_impl(ctx):
 
     output_module_file_name = "{name}.slang-module".format(name = ctx.label.name)
     output_module_file = ctx.actions.declare_file(output_module_file_name)
-    compile_module(ctx, ctx.files.srcs, deps_modules, deps_root_paths, output_module_file, ctx.executable._slangc)
+    compile_module(ctx, ctx.files.srcs, deps_modules, deps_root_paths, output_module_file)
 
     output_shader_file_name = "{name}.spv".format(name = ctx.label.name)
     output_shader_file = ctx.actions.declare_file(output_shader_file_name)
@@ -16,7 +16,7 @@ def _slang_shader_impl(ctx):
     modules = depset(direct = [output_module_file], transitive = [deps_modules])
     modules_list = modules.to_list()
 
-    link_shader(ctx, modules_list, output_shader_file, ctx.executable._slangc)
+    link_shader(ctx, modules_list, output_shader_file)
 
     return [DefaultInfo(
         files = depset([output_shader_file]),
@@ -31,10 +31,6 @@ slang_shader = rule(
         "deps": attr.label_list(
             providers = [SlangModuleProvider],
         ),
-        "_slangc": attr.label(
-            executable = True,
-            cfg = "exec",
-            default = "@slang_toolchain//:slangc",
-        ),
     },
+    toolchains = ["//slang:toolchain_type"],
 )
