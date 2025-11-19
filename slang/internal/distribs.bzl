@@ -22,7 +22,7 @@ DISTRIBS = {
             "os": "linux",
             "arch": "x86_64",
             "url": "https://github.com/shader-slang/slang/releases/download/v2025.22.1/slang-2025.22.1-linux-x86_64.tar.gz",
-            "sha256": "b592c2ca8404f0a587633a7a1cfce35e2ab516f4a65cf5f148905b41e88fd61f",
+            "sha256": "1da353e3130a13050927245cfaba16cb8a6d9574e7b3b8a89ec30acba357f2b9",
         },
     ],
 }

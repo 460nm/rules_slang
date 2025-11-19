@@ -203,7 +203,7 @@
     },
     "@@rules_slang+//slang:extensions.bzl%slang": {
       "general": {
-        "bzlTransitiveDigest": "Fr4sFtp8t0LQZwjx5OoW3LSStaFyKzEPAGqPg8G4Fng=",
+        "bzlTransitiveDigest": "fNlbeJE+1jIQFgCuzi8XHOL462McnMXREdDMxfIebXk=",
         "usagesDigest": "efsVuHmUlP2nrHiiIa5hGX+A1C3GCcMxuuJjHwdHKEQ=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
@@ -225,7 +225,7 @@
               "urls": [
                 "https://github.com/shader-slang/slang/releases/download/v2025.22.1/slang-2025.22.1-linux-x86_64.tar.gz"
               ],
-              "sha256": "b592c2ca8404f0a587633a7a1cfce35e2ab516f4a65cf5f148905b41e88fd61f",
+              "sha256": "1da353e3130a13050927245cfaba16cb8a6d9574e7b3b8a89ec30acba357f2b9",
               "os": "linux"
             }
           },
