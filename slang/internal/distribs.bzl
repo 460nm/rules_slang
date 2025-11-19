@@ -1,3 +1,15 @@
+def parse_version(version_str):
+    parts = version_str.split(".")
+    if len(parts) != 3:
+        fail("invalid version string: {}".format(version_str))
+
+    major, minor, patch = parts
+
+    if int(minor) >= 100 or int(patch) >= 100:
+        fail("minor and patch versions must be less than 100: {}".format(version_str))
+
+    return int(major) * 10000 + int(minor) * 100 + int(patch)
+
 DISTRIBS = {
     "2025.22.1": [
         {

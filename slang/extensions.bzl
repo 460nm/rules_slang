@@ -1,17 +1,40 @@
-load("//slang/internal:distribs.bzl", "DISTRIBS")
+load("//slang/internal:distribs.bzl", "DISTRIBS", "parse_version")
 load("//slang/internal:slang_download.bzl", "slang_download")
 load("//slang/internal:toolchains.bzl", "slang_toolchains")
 
+_version_tag = tag_class(
+    attrs = {
+        "version": attr.string(mandatory = True),
+    },
+)
+
 def _slang_impl(ctx):
-    version = "2025.22.1"
+    max_version_num = -1
+    version = None
 
-    if not version in DISTRIBS:
-        fail("unsupported Slang version: {}".format(version))
+    for module in ctx.modules:
+        for tag in module.tags.version:
+            if not tag.version in DISTRIBS:
+                fail("unsupported Slang version: {}".format(tag.version))
 
-    distribs = DISTRIBS[version]
+            version_num = parse_version(tag.version)
+            if version_num > max_version_num:
+                max_version_num = version_num
+                version = tag.version
+
+    if version == None:
+        for version in DISTRIBS.keys():
+            version_num = parse_version(version)
+            if version_num > max_version_num:
+                max_version_num = version_num
+                version = version
+
+    if version == None:
+        fail("no Slang version specified and no default version available")
 
     repos = []
     os_archs = []
+    distribs = DISTRIBS[version]
 
     for distrib in distribs:
         repo_name = "slang_distrib_{}_{}".format(distrib["os"], distrib["arch"])
@@ -34,6 +57,9 @@ def _slang_impl(ctx):
 
 slang = module_extension(
     implementation = _slang_impl,
+    tag_classes = {
+        "version": _version_tag,
+    },
     os_dependent = False,
     arch_dependent = False,
 )

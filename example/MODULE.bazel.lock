@@ -203,7 +203,7 @@
     },
     "@@rules_slang+//slang:extensions.bzl%slang": {
       "general": {
-        "bzlTransitiveDigest": "OYBJwWpKBwyDadBBD7kGzy55LChleHcy26zl681cRWQ=",
+        "bzlTransitiveDigest": "Fr4sFtp8t0LQZwjx5OoW3LSStaFyKzEPAGqPg8G4Fng=",
         "usagesDigest": "efsVuHmUlP2nrHiiIa5hGX+A1C3GCcMxuuJjHwdHKEQ=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
