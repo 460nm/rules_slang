@@ -25,4 +25,18 @@ DISTRIBS = {
             "sha256": "1da353e3130a13050927245cfaba16cb8a6d9574e7b3b8a89ec30acba357f2b9",
         },
     ],
+    "2025.23.1": [
+        {
+            "os": "windows",
+            "arch": "x86_64",
+            "url": "https://github.com/shader-slang/slang/releases/download/v2025.23.1/slang-2025.23.1-windows-x86_64.tar.gz",
+            "sha256": "3647119b6a747a23a81b4215b0cbc7e08bc44e023381a9fefc0056565d706016",
+        },
+        {
+            "os": "linux",
+            "arch": "x86_64",
+            "url": "https://github.com/shader-slang/slang/releases/download/v2025.23.1/slang-2025.23.1-linux-x86_64.tar.gz",
+            "sha256": "a79f99da5fa7800ca2d87bf63ab1516d03e2ac23b4a3bfea8955b657897d9b73",
+        },
+    ],
 }

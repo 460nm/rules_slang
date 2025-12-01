@@ -23,11 +23,11 @@ def _slang_impl(ctx):
                 version = tag.version
 
     if version == None:
-        for version in DISTRIBS.keys():
-            version_num = parse_version(version)
-            if version_num > max_version_num:
-                max_version_num = version_num
-                version = version
+        for version_candidate in DISTRIBS.keys():
+            version_candidate_num = parse_version(version_candidate)
+            if version_candidate_num > max_version_num:
+                max_version_num = version_candidate_num
+                version = version_candidate
 
     if version == None:
         fail("no Slang version specified and no default version available")
