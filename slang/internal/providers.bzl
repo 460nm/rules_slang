@@ -6,3 +6,9 @@ SlangModuleProvider = provider(
         "deps_root_paths": "The transitive set of dependencies' root paths.",
     },
 )
+
+SlangConfigProvider = provider(
+    fields = {
+        "target": "The target platform for the slang configuration.",
+    },
+)

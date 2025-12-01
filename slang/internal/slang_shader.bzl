@@ -1,5 +1,5 @@
 load(":actions.bzl", "compile_module", "link_shader")
-load(":providers.bzl", "SlangModuleProvider")
+load(":providers.bzl", "SlangConfigProvider", "SlangModuleProvider")
 load(":utils.bzl", "gather_deps_module_files", "gather_deps_root_paths")
 
 def _slang_shader_impl(ctx):
@@ -16,7 +16,7 @@ def _slang_shader_impl(ctx):
     modules = depset(direct = [output_module_file], transitive = [deps_modules])
     modules_list = modules.to_list()
 
-    link_shader(ctx, modules_list, output_shader_file)
+    link_shader(ctx, modules_list, ctx.attr.config[SlangConfigProvider], output_shader_file)
 
     return [DefaultInfo(
         files = depset([output_shader_file]),
@@ -30,6 +30,10 @@ slang_shader = rule(
         ),
         "deps": attr.label_list(
             providers = [SlangModuleProvider],
+        ),
+        "config": attr.label(
+            mandatory = True,
+            providers = [SlangConfigProvider],
         ),
     },
     toolchains = ["//slang:toolchain_type"],

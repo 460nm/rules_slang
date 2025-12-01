@@ -1,10 +1,16 @@
-load("@rules_slang//slang:defs.bzl", "slang_shader")
+load("@rules_slang//slang:defs.bzl", "slang_config", "slang_shader")
+
+slang_config(
+    name = "mymod_config",
+    target = "spirv_1_6",
+)
 
 slang_shader(
     name = "triangle",
     srcs = [
         "triangle.slang",
     ],
+    config = ":mymod_config",
     deps = [
         "//a:mymod",
     ],
