@@ -29,6 +29,21 @@ def link_shader(ctx, module_files, config, output_shader_file):
     args = ctx.actions.args()
     args.add_all(module_files)
     args.add_all(TARGET_TO_FLAGS[config.target])
+
+    if config.emit_source_embed:
+        args.add_all([
+            "-source-embed-style",
+            config.source_embed_style,
+            "-source-embed-language",
+            config.source_embed_language,
+            "-source-embed-name",
+            "{prefix}{name}{suffix}".format(
+                prefix = config.source_embed_name_prefix,
+                name = ctx.label.name,
+                suffix = config.source_embed_name_suffix,
+            ),
+        ])
+
     args.add_all([
         "-o",
         output_shader_file.path,
