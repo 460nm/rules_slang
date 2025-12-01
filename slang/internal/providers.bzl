@@ -10,5 +10,6 @@ SlangModuleProvider = provider(
 SlangConfigProvider = provider(
     fields = {
         "target": "The target platform for the slang configuration.",
+        "extension": "The file extension.",
     },
 )
